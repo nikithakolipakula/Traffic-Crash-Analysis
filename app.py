@@ -15,7 +15,7 @@
 # # ======================
 # @st.cache_data
 # def load_data():
-#     return pd.read_csv("Traffic_Crashes_-_Crashes.csv")
+#     return pd.read_csv("sample_data.csv")
 
 # df = load_data()
 
