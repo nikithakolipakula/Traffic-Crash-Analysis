@@ -196,3 +196,5 @@ Academic coursework project
 
 This project demonstrates how data analysis and machine learning can be applied to real-world traffic data to improve safety and decision-making.
 
+### 🚀 Future Improvements
+- Add real-time traffic prediction
