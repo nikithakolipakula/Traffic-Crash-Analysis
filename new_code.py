@@ -9,9 +9,9 @@ from sklearn.metrics import r2_score, mean_squared_error
 
 sns.set_style("white")
 
-# ================================
+
 # LOAD DATASET
-# ================================
+
 
 df = pd.read_csv("Traffic_Crashes_-_Crashes.csv")
 
@@ -20,9 +20,9 @@ print(df.head())
 print(".........................")
 
 
-# ================================
+
 # INFO & DESCRIPTION
-# ================================
+
 
 print("INFO")
 df.info()
@@ -32,18 +32,17 @@ print(df.describe())
 print(".........................")
 
 
-# ================================
-# MISSING VALUES
-# ================================
+
+# MISSING VALUE
+
 
 print("MISSING VALUES")
 print(df.isnull().sum())
 print(".........................")
 
 
-# ================================
+
 # HANDLE MISSING VALUES
-# ================================
 
 for col in df.select_dtypes(include=np.number).columns:
     df[col] = df[col].fillna(df[col].mean())
@@ -55,16 +54,12 @@ print("AFTER CLEANING")
 print(df.isnull().sum())
 
 
-# ================================
 # REMOVE DUPLICATES
-# ================================
 
 df.drop_duplicates(inplace=True)
 
 
-# ================================
 # NUMPY ANALYSIS
-# ================================
 
 num_cols = df.select_dtypes(include=np.number).columns
 
@@ -74,17 +69,13 @@ print("Std:", np.std(df[num_cols].iloc[:,1]))
 print("Max:", np.max(df[num_cols].iloc[:,0]))
 
 
-# ================================
 # SAMPLE DATA
-# ================================
 
 df_small = df.sample(500)
 num_df = df_small.select_dtypes(include=np.number).iloc[:, :5]
 
 
-# ================================
 # DATA VISUALIZATION
-# ================================
 
 # HISTOGRAM
 plt.figure()
@@ -102,8 +93,7 @@ plt.xlabel(num_df.columns[0])
 plt.ylabel(num_df.columns[1])
 plt.show()
 
-# PAIRPLOT (with color)
-# PAIRPLOT (FIXED)
+# PAIRPLOT 
 sns.pairplot(num_df.iloc[:, :3], diag_kind="kde")
 plt.suptitle("Pairplot of Features", y=1.02)
 plt.show()
@@ -133,7 +123,7 @@ if 'CRASH_HOUR' in df.columns:
     plt.ylabel("Number of Crashes")
     plt.show()
 
-# PIE CHART (with labels + legend)
+# PIE CHART
 top = df[num_cols[0]].value_counts().head(5)
 
 plt.figure()
@@ -143,38 +133,16 @@ plt.title("Top 5 Distribution")
 plt.legend(title="Categories", loc="best")
 plt.show()
 
-# PIE CHART (FIXED WITH PROPER LABELS)
 
-top = df[num_cols[0]].value_counts().head(5)
 
-labels = [f"{idx}" for idx in top.index]
 
-plt.figure(figsize=(6,6))
-colors = sns.color_palette("pastel")
-
-plt.pie(
-    top.values,
-    labels=labels,
-    autopct='%1.1f%%',
-    colors=colors,
-    startangle=90
-)
-
-plt.title("Top 5 Distribution")
-plt.legend(labels, title="Categories", loc="best")
-plt.tight_layout()
-plt.show()
-# ================================
 # CORRELATION & COVARIANCE
-# ================================
 
 print("\nCorrelation:\n", df.corr(numeric_only=True))
 print("\nCovariance:\n", df.cov(numeric_only=True))
 
 
-# ================================
 # STATISTICAL MODELLING
-# ================================
 
 print("\nSTATISTICAL VALUES")
 print("Mean:", df[num_cols[0]].mean())
@@ -183,9 +151,7 @@ print("Variance:", df[num_cols[0]].var())
 print("Standard Deviation:", df[num_cols[0]].std())
 
 
-# ================================
 # HYPOTHESIS TESTING
-# ================================
 
 # Shapiro Test
 stat, p = stats.shapiro(df[num_cols[0]].sample(500))
@@ -211,7 +177,7 @@ else:
     print("No significant difference")
 
 
-# Z-TEST (ADDED)
+# Z-TEST 
 mean1 = np.mean(high)
 mean2 = np.mean(low)
 std1 = np.std(high)
@@ -225,9 +191,7 @@ z = (mean1 - mean2) / np.sqrt((std1**2/n1) + (std2**2/n2))
 print("\nZ-Test value:", z)
 
 
-# ================================
 # OUTLIER REMOVAL
-# ================================
 
 Q1 = df[num_cols[0]].quantile(0.25)
 Q3 = df[num_cols[0]].quantile(0.75)
@@ -240,9 +204,7 @@ upper = Q3 + 1.5 * IQR
 df = df[(df[num_cols[0]] >= lower) & (df[num_cols[0]] <= upper)]
 
 
-# ================================
 # MACHINE LEARNING
-# ================================
 
 df_num = df.select_dtypes(include=np.number)
 
@@ -263,9 +225,7 @@ print("R2 SCORE:", r2_score(y_test, y_pred))
 print("MSE:", mean_squared_error(y_test, y_pred))
 
 
-# ================================
 # SAVE DATA
-# ================================
 
 df.to_csv("traffic_cleaned.csv", index=False)
 
